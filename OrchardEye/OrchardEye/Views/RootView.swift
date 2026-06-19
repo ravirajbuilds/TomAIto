@@ -1,0 +1,40 @@
+//
+//  RootView.swift
+//  OrchardEye
+//
+
+import SwiftUI
+
+struct RootView: View {
+    @EnvironmentObject var app: AppModel
+
+    var body: some View {
+        Group {
+            if app.hasOnboarded {
+                MainTabView()
+            } else {
+                OnboardingView()
+            }
+        }
+        .task { await app.refreshWeather() }
+    }
+}
+
+struct MainTabView: View {
+    var body: some View {
+        TabView {
+            ScanFlowView()
+                .tabItem { Label("Scan", systemImage: "camera.viewfinder") }
+            HistoryView()
+                .tabItem { Label("History", systemImage: "clock.arrow.circlepath") }
+            TrendsView()
+                .tabItem { Label("Trends", systemImage: "chart.line.uptrend.xyaxis") }
+            SettingsView()
+                .tabItem { Label("Settings", systemImage: "gearshape") }
+        }
+    }
+}
+
+#Preview {
+    RootView().environmentObject(AppModel())
+}

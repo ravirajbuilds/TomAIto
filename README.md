@@ -12,14 +12,29 @@ One scan of a fruit or leaf → two answers:
 >
 > **Pitch:** *"OrchardEye puts a $3,000 lab capability into a $100 phone attachment so the small apple and cherry growers who power my district can pick at peak quality and catch disease early — turning waste into income."*
 
-> ⚠️ **Status:** v0.1 — research & design phase. This repo currently holds the planning artifacts (PRD, research, designs, build prompt). Code lands in the build phases (see the [PRD timeline](docs/PRD.md#11-milestones--timeline)).
+> ⚠️ **Status:** v0.1. The planning artifacts (PRD, research, designs, build prompt) are in [`docs/`](docs/), and a **buildable native-iOS app** is in [`OrchardEye/`](OrchardEye/) — full UX with the disease model and BLE sensor stubbed behind protocols (see [the app README](OrchardEye/README.md)).
 
 ---
+
+## 📱 The app
+
+A complete **native iOS (SwiftUI)** v1 lives in **[`OrchardEye/`](OrchardEye/)** — it builds in
+**Xcode 16+** and runs the full scan → quality gate → disease + crop-health → NIR ripeness/Brix →
+**fused verdict** → voice + trends + confirm/correct flow, all on-device.
+
+```bash
+open OrchardEye/OrchardEye.xcodeproj   # ⌘R on an iPhone simulator
+```
+It's Simulator-friendly: tap a **sample leaf** and **Scan fruit** (the camera/NIR are simulated)
+to walk the whole pipeline. The disease model and BLE sensor are clean **stubs** behind protocols
+(`DiseaseClassifier`, `SpectralSensor`) ready for a real Core ML model and an AS7265x. See
+**[`OrchardEye/README.md`](OrchardEye/README.md)** for build notes and the real-vs-stubbed map.
 
 ## 📚 Documentation index
 
 | Doc | What's inside |
 |---|---|
+| **[📱 iOS app](OrchardEye/README.md)** | The buildable SwiftUI v1 (Xcode 16+): full scan→verdict→trends flow, on-device. |
 | **[PRD](docs/PRD.md)** | Full product requirements: goals, users, features, architecture, BOM, ML plan, milestones, risks, CAC alignment. |
 | **[AI Pipeline](docs/design/ai-pipeline.md)** | The end-to-end flow: quality gate → preprocess → quantized on-device models → fusion → report/trends → community loop (with a Mermaid flowchart + feedback loops). |
 | **[Feature List & Variables](docs/design/feature-list.md)** | The four core variables (disease, crop-health score, trend/risk detection, voice guidance) + supporting features + the variable dictionary. |

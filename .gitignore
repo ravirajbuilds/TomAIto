@@ -33,6 +33,21 @@ npm-debug.log*
 yarn-error.log*
 .expo/
 
+# --- Xcode / Swift (OrchardEye iOS app) ---
+# Keep: *.xcodeproj/project.pbxproj and xcshareddata/ (shared schemes).
+# Ignore: per-user state and build output.
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+.swiftpm/
+Pods/
+
 # --- Python / ML training ---
 __pycache__/
 *.py[cod]
