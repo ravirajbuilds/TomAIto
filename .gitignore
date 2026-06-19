@@ -1,0 +1,67 @@
+# --- OrchardEye .gitignore (planning + future build phases) ---
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.iml
+
+# Secrets / API keys (weather API, etc.) — never commit
+.env
+.env.*
+*.key
+secrets/
+
+# Claude Code local (per-user) settings — keep out of version control
+.claude/settings.local.json
+
+# --- Flutter / Dart (app) ---
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+*.lock.bak
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# --- React Native / Node (if chosen instead of Flutter) ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.expo/
+
+# --- Python / ML training ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+*.egg-info/
+
+# Large model + data artifacts (track with Git LFS or release assets instead)
+*.h5
+*.tflite
+*.pt
+*.pth
+*.onnx
+*.ckpt
+data/raw/
+data/interim/
+datasets/
+runs/
+wandb/
+
+# --- ESP32 / PlatformIO / Arduino (firmware) ---
+.pio/
+.pioenvs/
+.piolibdeps/
+*.bin
+*.elf
+
+# Scratch
+tmp/
+scratch/
