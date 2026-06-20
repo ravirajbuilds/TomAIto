@@ -50,12 +50,12 @@ enum ImageAnalysis {
                 sr += r; sg += g; sb += b
                 let l = 0.299 * r + 0.587 * g + 0.114 * b
                 lum[i] = l
-                if g > r && g > b && g > 0.25 {
-                    green += 1
+                if g > 0.22 && (g - r) > 0.06 && (g - b) > 0.04 {
+                    green += 1            // green dominant (excludes near-white/gray)
                 } else if r > 0.45 && g > 0.32 && b < 0.35 && abs(r - g) < 0.28 {
-                    yellow += 1
+                    yellow += 1           // chlorosis (yellowing)
                 } else if r > 0.18 && r < 0.62 && g < 0.45 && b < 0.40 && r >= g {
-                    brown += 1
+                    brown += 1            // necrosis / lesion
                 }
             }
 
@@ -108,13 +108,16 @@ enum ImageAnalysis {
             rib.stroke()
 
             if !healthy {
-                for _ in 0..<14 {
-                    let x = CGFloat.random(in: 110...370)
-                    let y = CGFloat.random(in: 100...400)
-                    let d = CGFloat.random(in: 16...44)
-                    UIColor(red: 0.80, green: 0.75, blue: 0.25, alpha: 0.5).setFill()
-                    UIBezierPath(ovalIn: CGRect(x: x - 6, y: y - 6, width: d + 12, height: d + 12)).fill()
-                    UIColor(red: 0.36, green: 0.24, blue: 0.10, alpha: 0.92).setFill()
+                // Large necrotic blotches with yellow halos — clearly diseased
+                // even after the classifier downsamples to a small grid.
+                let blotches: [(CGFloat, CGFloat, CGFloat)] = [
+                    (150, 130, 120), (270, 170, 100), (175, 290, 115),
+                    (300, 310, 95), (215, 205, 90), (120, 250, 80), (320, 120, 85)
+                ]
+                for (x, y, d) in blotches {
+                    UIColor(red: 0.82, green: 0.74, blue: 0.22, alpha: 0.55).setFill()  // yellow halo
+                    UIBezierPath(ovalIn: CGRect(x: x - 14, y: y - 14, width: d + 28, height: d + 28)).fill()
+                    UIColor(red: 0.34, green: 0.22, blue: 0.09, alpha: 0.96).setFill()  // brown necrosis
                     UIBezierPath(ovalIn: CGRect(x: x, y: y, width: d, height: d)).fill()
                 }
             }

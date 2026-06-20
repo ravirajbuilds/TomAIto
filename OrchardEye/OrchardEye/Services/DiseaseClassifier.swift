@@ -30,9 +30,9 @@ final class MockDiseaseClassifier: DiseaseClassifier {
         try? await Task.sleep(nanoseconds: 500_000_000)
 
         let s = ImageAnalysis.stats(for: image)
-        let lesion = min(100, s.brownFraction * 220)
-        let chlorosis = min(100, s.yellowFraction * 180)
-        let symptomLoad = (lesion + chlorosis) / 100.0           // ~0–2
+        let lesion = min(100, s.brownFraction * 200)
+        let chlorosis = min(100, s.yellowFraction * 160)
+        let symptom = max(lesion, chlorosis)                     // 0–100, strongest symptom
         let healthScore = max(0, min(100, Int(100 - lesion * 0.8 - chlorosis * 0.5)))
 
         let health = CropHealth(
@@ -44,9 +44,9 @@ final class MockDiseaseClassifier: DiseaseClassifier {
 
         let candidates = DiseaseInfo.candidates(for: crop)
 
-        // Mostly green, few symptoms → healthy.
-        if symptomLoad < 0.25 || s.greenFraction > 0.55 {
-            let conf = min(0.98, 0.80 + s.greenFraction * 0.2)
+        // Few symptoms → healthy.
+        if symptom < 12 {
+            let conf = min(0.97, 0.82 + s.greenFraction * 0.2)
             return DiseaseClassification(
                 disease: .healthy, confidence: conf,
                 alternatives: candidates.first.map { [$0.name] } ?? [],
@@ -56,7 +56,7 @@ final class MockDiseaseClassifier: DiseaseClassifier {
         // Otherwise pick a disease deterministically from the symptom signature.
         let idx = Int((s.brownFraction * 97 + s.yellowFraction * 57).rounded()) % max(1, candidates.count)
         let primary = candidates[idx]
-        let conf = min(0.95, 0.55 + symptomLoad * 0.25)
+        let conf = min(0.95, 0.65 + (symptom / 100) * 0.3)
         let alts = Array(candidates.filter { $0 != primary }.map { $0.name }.prefix(2))
 
         return DiseaseClassification(

@@ -141,8 +141,11 @@ struct ScanFlowView: View {
                 }
             }
             .sheet(isPresented: $showCamera) {
-                CameraPicker { img in vm.useImage(img, app: app) }
-                    .ignoresSafeArea()
+                CameraPicker { img in
+                    showCamera = false
+                    vm.useImage(img, app: app)
+                }
+                .ignoresSafeArea()
             }
             .onChange(of: photoItem) { _, newItem in
                 guard let newItem else { return }

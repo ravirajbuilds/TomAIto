@@ -21,6 +21,11 @@ protocol SpectralSensor: AnyObject {
 final class SimulatedSpectralSensor: SpectralSensor {
     private(set) var isConnected = false
 
+    // The "fruit" being measured. Held stable so the 3 rapid reads of one scan
+    // agree (high stability); a fresh fruit is assumed after a short gap.
+    private var baseBrix = Double.random(in: 8...18)
+    private var lastRead = Date.distantPast
+
     func connect() async throws {
         try? await Task.sleep(nanoseconds: 800_000_000)
         isConnected = true
@@ -30,9 +35,12 @@ final class SimulatedSpectralSensor: SpectralSensor {
         guard isConnected else { throw SensorError.notConnected }
         try? await Task.sleep(nanoseconds: 400_000_000)
 
-        // Pick a hidden ripeness for this "fruit"; shape the curve around it.
-        let hiddenBrix = Double.random(in: 8...18)
-        let ripe01 = (hiddenBrix - 8) / 10.0   // 0 unripe … 1 very ripe
+        // New fruit if it's been a couple seconds since the last read.
+        if Date().timeIntervalSince(lastRead) > 2 {
+            baseBrix = Double.random(in: 8...18)
+        }
+        lastRead = Date()
+        let ripe01 = (baseBrix - 8) / 10.0   // 0 unripe … 1 very ripe
 
         var channels: [Double] = []
         for wl in SpectralReading.wavelengths {
@@ -45,7 +53,7 @@ final class SimulatedSpectralSensor: SpectralSensor {
             } else {
                 v = 0.55 + 0.30 * ripe01                    // NIR plateau rises with ripeness
             }
-            v += Double.random(in: -0.02...0.02)
+            v += Double.random(in: -0.01...0.01)            // small per-read noise → high stability
             channels.append(min(1, max(0, v)))
         }
         return channels
@@ -60,17 +68,20 @@ enum QualityModel {
         let wavelengths = SpectralReading.wavelengths
         guard channels.count == wavelengths.count else { return (.unripe, 10) }
 
-        let nir = average(channels, atOrAbove: 760)
-        let redIdx = wavelengths.firstIndex(of: 680) ?? 0
-        let red = channels[redIdx]
-        let ratio = nir / max(0.05, red)
+        // Ripeness rises as the NIR plateau lifts and the 680 nm chlorophyll dip
+        // fills in. Combine both into a 0–1 ripeness, then to °Brix.
+        let nir = average(channels, atOrAbove: 760)                 // ~0.55 … 0.85
+        let redDip = channels[wavelengths.firstIndex(of: 680) ?? 0] // ~0.20 … 0.55
+        let ripeFromNIR = (nir - 0.55) / 0.30
+        let ripeFromRed = (redDip - 0.20) / 0.35
+        let ripe01 = max(0, min(1, (ripeFromNIR + ripeFromRed) / 2))
 
-        let brix = min(22, max(6, 6 + ratio * 3.0))
+        let brix = 8 + ripe01 * 10                                  // 8 … 18 °Brix
         let ripeness: RipenessClass
         switch brix {
-        case ..<11:    ripeness = .unripe
-        case 11..<17:  ripeness = .ripe
-        default:       ripeness = .overripe
+        case ..<11.5:     ripeness = .unripe
+        case 11.5..<15.5: ripeness = .ripe
+        default:          ripeness = .overripe
         }
         return (ripeness, (brix * 10).rounded() / 10)
     }
