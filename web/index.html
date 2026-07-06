@@ -176,6 +176,12 @@
       <p class="pipeline__note reveal">Everything above runs on the phone. No cloud round-trip, no dead-zone failures.</p>
     </section>
 
+    <!-- ───────────────────────── Statement band ───────────────────────── -->
+    <section class="statement">
+      <p class="statement__eyebrow reveal">The shift</p>
+      <p class="statement__line reveal">Ripeness and disease belong <em>in the field</em>, not the lab.</p>
+    </section>
+
     <!-- ───────────────────────── Features ───────────────────────── -->
     <section class="section" id="features">
       <div class="section__head reveal">
@@ -252,10 +258,32 @@
         <span class="eyebrow eyebrow--light">Join the pilot program</span>
         <h2>Put a lab in your pocket this season.</h2>
         <p>We're partnering with a small group of WA-08 apple and cherry growers to field-test OrchardEye. Bring your orchard, we'll bring the sensor.</p>
-        <div class="pilot__cta">
-          <a href="mailto:hello@orchardeye.app?subject=OrchardEye%20pilot" class="btn btn--solid btn--lg">Apply to the pilot</a>
-          <a href="https://github.com/ravirajbuilds/tomaito" class="btn btn--ghost btn--lg btn--onlight">View the project →</a>
-        </div>
+
+        <!-- Static-host friendly: JS composes a mailto on submit. To collect
+             online instead, set data-endpoint to a Formspree/Basin URL. -->
+        <form class="pilot__form reveal" id="pilotForm" data-endpoint="" data-mailto="hello@orchardeye.app" novalidate>
+          <div class="field">
+            <label for="pf-name">Name</label>
+            <input id="pf-name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="pf-email">Email</label>
+            <input id="pf-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field field--wide">
+            <label for="pf-orchard">Orchard &amp; location</label>
+            <input id="pf-orchard" name="orchard" type="text" placeholder="e.g. 20 acres Honeycrisp, Wenatchee" />
+          </div>
+          <div class="field field--wide">
+            <label for="pf-msg">What would you want to test?</label>
+            <textarea id="pf-msg" name="message" rows="3"></textarea>
+          </div>
+          <div class="pilot__actions field--wide">
+            <button type="submit" class="btn btn--solid btn--lg">Apply to the pilot</button>
+            <a href="https://github.com/ravirajbuilds/tomaito" class="btn btn--ghost btn--lg btn--onlight">View the project →</a>
+          </div>
+          <p class="pilot__status" role="status" aria-live="polite"></p>
+        </form>
       </div>
     </section>
   </main>

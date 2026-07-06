@@ -28,3 +28,44 @@ const nav = document.getElementById('nav');
 const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 8);
 onScroll();
 window.addEventListener('scroll', onScroll, { passive: true });
+
+// Pilot form: validate, then POST to data-endpoint if set, else compose a
+// mailto so it works on a static host with no backend.
+const form = document.getElementById('pilotForm');
+if (form) {
+  const status = form.querySelector('.pilot__status');
+  const say = (msg, ok) => { status.textContent = msg; status.dataset.state = ok ? 'ok' : 'err'; };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    if (!data.name?.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email || '')) {
+      say('Add your name and a valid email first.', false);
+      return;
+    }
+
+    const endpoint = form.dataset.endpoint;
+    if (endpoint) {
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form),
+        });
+        say(res.ok ? "Thanks. We'll be in touch about the pilot." : 'Something went wrong. Try the email link.', res.ok);
+        if (res.ok) form.reset();
+      } catch {
+        say('Network error. Try again, or email us directly.', false);
+      }
+      return;
+    }
+
+    // No endpoint configured: open the user's mail client, pre-filled.
+    const body =
+      `Name: ${data.name}\nEmail: ${data.email}\n` +
+      `Orchard: ${data.orchard || '—'}\n\n${data.message || ''}`;
+    const to = form.dataset.mailto || 'hello@orchardeye.app';
+    window.location.href =
+      `mailto:${to}?subject=${encodeURIComponent('OrchardEye pilot application')}` +
+      `&body=${encodeURIComponent(body)}`;
+    say('Opening your email app to send the application…', true);
+  });
+}

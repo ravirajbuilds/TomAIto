@@ -264,6 +264,26 @@ a:focus-visible, .btn:focus-visible, .nav__brand:focus-visible {
 .bom h4 { font-size: 1.1rem; margin-bottom: 6px; }
 .bom p { color: var(--ink-soft); font-size: .95rem; }
 
+/* ───────────────── statement band ───────────────── */
+.statement {
+  background: var(--forest); color: #eafff0; text-align: center;
+  padding: clamp(56px, 8vw, 100px) 24px; position: relative; overflow: hidden;
+}
+.statement::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(50% 80% at 50% 0%, rgba(52,168,83,.18), transparent 65%);
+}
+.statement__eyebrow {
+  position: relative; font-weight: 600; font-size: .78rem; letter-spacing: .14em;
+  text-transform: uppercase; color: #9be4ad; margin: 0 0 14px;
+}
+.statement__line {
+  position: relative; font-family: var(--display); font-weight: 800;
+  font-size: clamp(1.6rem, 4.2vw, 3rem); line-height: 1.12; letter-spacing: -.02em;
+  max-width: 18ch; margin: 0 auto;
+}
+.statement__line em { color: var(--ripe); font-style: normal; }
+
 /* ───────────────── pilot ───────────────── */
 .pilot { background: linear-gradient(155deg, var(--forest), var(--forest-2) 60%, #1d3d28); color: #eafff0; position: relative; overflow: hidden; }
 .pilot::before {
@@ -275,6 +295,29 @@ a:focus-visible, .btn:focus-visible, .nav__brand:focus-visible {
 .pilot__inner h2 { font-size: clamp(2rem, 4.4vw, 3.1rem); font-weight: 800; }
 .pilot__inner p { color: #bfe0cb; font-size: 1.12rem; margin: 16px auto 32px; max-width: 46ch; }
 .pilot__cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+/* pilot form */
+.pilot__form {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  max-width: 620px; margin: 0 auto; text-align: left;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field--wide { grid-column: 1 / -1; }
+.field label { font-size: .82rem; font-weight: 600; color: #bfe0cb; }
+.field input, .field textarea {
+  font: inherit; font-size: .95rem; color: #eafff0;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16);
+  border-radius: 12px; padding: 12px 14px; width: 100%; resize: vertical;
+  transition: border-color .15s, background .15s;
+}
+.field input::placeholder, .field textarea::placeholder { color: #6f8a7a; }
+.field input:focus, .field textarea:focus {
+  outline: none; border-color: var(--leaf); background: rgba(255,255,255,.10);
+}
+.pilot__actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 4px; }
+.pilot__status { grid-column: 1 / -1; margin: 4px 0 0; font-size: .9rem; min-height: 1.2em; }
+.pilot__status[data-state="ok"]  { color: #9be4ad; }
+.pilot__status[data-state="err"] { color: #ffb4ad; }
 
 /* ───────────────── footer ───────────────── */
 .footer { background: var(--forest); color: #a9c4b3; }
@@ -308,6 +351,7 @@ a:focus-visible, .btn:focus-visible, .nav__brand:focus-visible {
 }
 @media (max-width: 620px) {
   .cards--2, .cards--3, .targets { grid-template-columns: 1fr; }
+  .pilot__form { grid-template-columns: 1fr; }
   .hero__stats { gap: 20px; }
   .pipe__arrow { transform: rotate(90deg); }
   .pipe--in, .pipe--out { flex-direction: row; }

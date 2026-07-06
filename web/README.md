@@ -27,4 +27,13 @@ Point Pages at this folder:
 2. Branch `main`, folder **`/web`** (or move these files to `/docs` if you prefer Pages' default).
 3. Save. It publishes at `https://ravirajbuilds.github.io/tomaito/`.
 
-> Edit the pilot `mailto:` and any copy before going live. "OrchardEye" is still a working name.
+## Pilot form
+
+The pilot section has a real signup form (name / email / orchard / message).
+With no backend it composes a `mailto:` on submit, so it works on GitHub Pages.
+To collect submissions online instead, set the form's `data-endpoint` (in
+`index.html`) to a [Formspree](https://formspree.io) or Basin URL; `main.js`
+POSTs there and falls back to mail on error. Update `data-mailto` to the real
+inbox either way.
+
+> Edit the pilot address and any copy before going live. "OrchardEye" is still a working name.
