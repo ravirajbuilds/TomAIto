@@ -23,7 +23,7 @@
 
   <text x="90" y="300" fill="#eafff0" font-size="98" font-weight="800">One scan.</text>
   <text x="90" y="410" font-size="98" font-weight="800" fill="#34a853">Two answers.</text>
-  <text x="92" y="482" fill="#bfe0cb" font-size="30" font-weight="400" font-family="Inter, sans-serif">Disease + ripeness in one offline verdict — on sub-$130 hardware.</text>
+  <text x="92" y="482" fill="#bfe0cb" font-size="30" font-weight="400" font-family="Inter, sans-serif">Disease + ripeness in one offline verdict, on sub-$130 hardware.</text>
 
   <g font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#cde6d6">
     <text x="92" y="560">&lt; 3s verdict</text>

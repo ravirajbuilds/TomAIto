@@ -137,7 +137,7 @@ struct VerdictView: View {
                         }.buttonStyle(.bordered).tint(.orange)
                     }
                 } else {
-                    Label(reviewState == 1 ? "Thanks — confirmed and saved." : "Thanks — correction saved.",
+                    Label(reviewState == 1 ? "Thanks, confirmed and saved." : "Thanks, correction saved.",
                           systemImage: "checkmark.seal.fill")
                         .foregroundStyle(.green).font(.subheadline)
                 }
@@ -153,7 +153,7 @@ struct VerdictView: View {
                         .lineLimit(2...5)
                 }
                 Section {
-                    Text("Logged locally as community knowledge — corrections are the highest-value training signal.")
+                    Text("Logged locally as community knowledge. Corrections are the highest-value training signal.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }

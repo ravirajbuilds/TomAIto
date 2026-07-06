@@ -1,4 +1,4 @@
-// OrchardEye landing — progressive enhancement only.
+// OrchardEye landing. Progressive enhancement only.
 // Scroll-reveal + sticky-nav shadow. No dependencies.
 
 // Reveal on scroll

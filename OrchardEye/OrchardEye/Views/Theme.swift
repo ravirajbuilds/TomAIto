@@ -2,9 +2,9 @@
 //  Theme.swift
 //  OrchardEye
 //
-//  Shared brand design system — the same palette and type treatment as the
+//  Shared brand design system: the same palette and type treatment as the
 //  OrchardEye landing page (../../web). Deep orchard green + ripe amber.
-//  New file auto-compiles via the project's file-system–synchronized group.
+//  New file auto-compiles via the project's file-system-synchronized group.
 //
 
 import SwiftUI
@@ -12,13 +12,13 @@ import SwiftUI
 // MARK: - Palette
 
 extension Color {
-    /// Fresh leaf green — the primary brand green (matches AccentColor).
+    /// Fresh leaf green: the primary brand green (matches AccentColor).
     static let brandLeaf     = Color(red: 0.204, green: 0.659, blue: 0.325) // #34A853
-    /// Deep leaf — for text-on-light and pressed states.
+    /// Deep leaf: for text-on-light and pressed states.
     static let brandLeafDark = Color(red: 0.184, green: 0.490, blue: 0.243) // #2F7D3E
-    /// Ripe amber — the "ripeness" accent.
+    /// Ripe amber: the "ripeness" accent.
     static let brandRipe     = Color(red: 0.957, green: 0.651, blue: 0.165) // #F4A62A
-    /// Dark forest — hero / banner backgrounds.
+    /// Dark forest: hero / banner backgrounds.
     static let brandForest   = Color(red: 0.059, green: 0.141, blue: 0.090) // #0F2417
     static let brandForest2  = Color(red: 0.086, green: 0.188, blue: 0.125) // #163020
     /// Warm ink for headings on light backgrounds.
@@ -51,7 +51,7 @@ struct Eyebrow: View {
     }
 }
 
-// MARK: - Primary button (solid leaf capsule — matches the site CTA)
+// MARK: - Primary button (solid leaf capsule: matches the site CTA)
 
 struct BrandButtonStyle: ButtonStyle {
     var tint: Color = .brandLeafDark
@@ -68,7 +68,7 @@ struct BrandButtonStyle: ButtonStyle {
     }
 }
 
-// MARK: - Brand mark (apple + sensor "iris" — the logo, in SwiftUI)
+// MARK: - Brand mark (apple + sensor "iris": the logo, in SwiftUI)
 
 struct BrandMark: View {
     var size: CGFloat = 96

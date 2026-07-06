@@ -43,7 +43,7 @@ struct SettingsView: View {
                 }
 
                 Section("About") {
-                    Text("OrchardEye — a dual-sensor crop disease & quality scanner, built for the Congressional App Challenge (WA-08 tree-fruit country).")
+                    Text("OrchardEye: a dual-sensor crop disease & quality scanner, built for the Congressional App Challenge (WA-08 tree-fruit country).")
                         .font(.subheadline)
                     Text("This build uses a placeholder vision model and a simulated NIR sensor so the full flow is demoable. Spectral claims are limited to what 410–940 nm sensing can really do.")
                         .font(.footnote).foregroundStyle(.secondary)

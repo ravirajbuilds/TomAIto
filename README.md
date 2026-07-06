@@ -32,7 +32,7 @@ to walk the whole pipeline. The disease model and BLE sensor are clean **stubs**
 
 ## 🌐 Landing page
 
-A self-contained marketing site lives in **[`web/`](web/)** — plain HTML/CSS/JS, no build
+A self-contained marketing site lives in **[`web/`](web/)**. Plain HTML/CSS/JS, no build
 step, ready for GitHub Pages. Same brand palette as the app (orchard green + ripe amber).
 
 ```bash

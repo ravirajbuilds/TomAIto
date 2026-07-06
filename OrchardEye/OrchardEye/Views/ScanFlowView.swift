@@ -73,7 +73,7 @@ final class ScanViewModel: ObservableObject {
             await fuse(app: app)
         } catch {
             isWorking = false
-            statusText = "Sensor not connected — tap Scan to retry."
+            statusText = "Sensor not connected. Tap Scan to retry."
         }
     }
 
@@ -188,7 +188,7 @@ struct ScanFlowView: View {
                         }
                         .font(.subheadline)
                         Divider()
-                        Text("Step 1 — photo of a leaf or fruit")
+                        Text("Step 1: photo of a leaf or fruit")
                             .font(.subheadline).foregroundStyle(.secondary)
 
                         if CameraPicker.isAvailable {
@@ -214,7 +214,7 @@ struct ScanFlowView: View {
                             }.buttonStyle(.bordered)
                         }
 
-                        Text("No camera or sensor? Use a sample to run the full flow — readings are simulated.")
+                        Text("No camera or sensor? Use a sample to run the full flow. Readings are simulated.")
                             .font(.footnote).foregroundStyle(.tertiary)
                     }
                 }
@@ -325,7 +325,7 @@ struct ScanFlowView: View {
             VStack(spacing: 16) {
                 Card {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Step 2 — NIR quality scan").font(.headline)
+                        Text("Step 2: NIR quality scan").font(.headline)
                         Text("Hold the sensor against the fruit and scan. We average 3 reads for stability.")
                             .font(.subheadline).foregroundStyle(.secondary)
                         if let s = vm.spectral {
