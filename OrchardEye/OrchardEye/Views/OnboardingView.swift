@@ -35,11 +35,10 @@ struct OnboardingView: View {
 
             Button(action: advance) {
                 Text(primaryTitle)
-                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            .buttonStyle(BrandButtonStyle())
             .disabled(!canAdvance)
+            .opacity(canAdvance ? 1 : 0.5)
             .padding(.horizontal)
         }
         .padding(.vertical)
@@ -48,12 +47,18 @@ struct OnboardingView: View {
     // MARK: Steps
 
     private var welcome: some View {
-        VStack(spacing: 16) {
-            Text("🍎🔬").font(.system(size: 64))
-            Text("Welcome to OrchardEye")
-                .font(.largeTitle.bold())
-                .multilineTextAlignment(.center)
-            Text("One scan answers two questions: is it diseased, and is it good? Let's get your sensor set up.")
+        VStack(spacing: 18) {
+            BrandMark(size: 104)
+            Eyebrow(text: "Congressional App Challenge · WA-08")
+            VStack(spacing: 6) {
+                Text("Welcome to OrchardEye")
+                    .font(.largeTitle.bold())
+                    .multilineTextAlignment(.center)
+                Text("One scan. Two answers.")
+                    .font(.title3.weight(.semibold))
+                    .foregroundStyle(Color.brandLeafDark)
+            }
+            Text("Is it diseased, and is it good? Let's get your sensor set up.")
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
                 .padding(.horizontal)

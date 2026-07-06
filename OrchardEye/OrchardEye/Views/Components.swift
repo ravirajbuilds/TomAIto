@@ -17,7 +17,12 @@ struct Card<Content: View>: View {
         content
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(16)
-            .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16))
+            .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 18))
+            .overlay(
+                RoundedRectangle(cornerRadius: 18)
+                    .strokeBorder(Color.brandLeaf.opacity(0.10), lineWidth: 1)
+            )
+            .shadow(color: .black.opacity(0.05), radius: 10, y: 4)
     }
 }
 

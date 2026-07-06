@@ -30,10 +30,21 @@ to walk the whole pipeline. The disease model and BLE sensor are clean **stubs**
 (`DiseaseClassifier`, `SpectralSensor`) ready for a real Core ML model and an AS7265x. See
 **[`OrchardEye/README.md`](OrchardEye/README.md)** for build notes and the real-vs-stubbed map.
 
+## 🌐 Landing page
+
+A self-contained marketing site lives in **[`web/`](web/)** — plain HTML/CSS/JS, no build
+step, ready for GitHub Pages. Same brand palette as the app (orchard green + ripe amber).
+
+```bash
+cd web && python3 -m http.server 8000   # → http://localhost:8000
+```
+Build/deploy notes: **[web/README.md](web/README.md)**.
+
 ## 📚 Documentation index
 
 | Doc | What's inside |
 |---|---|
+| **[🌐 Landing page](web/README.md)** | Self-contained marketing site (hero → problem → how-it-works → sensors → pilot). Deploys to GitHub Pages. |
 | **[📱 iOS app](OrchardEye/README.md)** | The buildable SwiftUI v1 (Xcode 16+): full scan→verdict→trends flow, on-device. |
 | **[PRD](docs/PRD.md)** | Full product requirements: goals, users, features, architecture, BOM, ML plan, milestones, risks, CAC alignment. |
 | **[AI Pipeline](docs/design/ai-pipeline.md)** | The end-to-end flow: quality gate → preprocess → quantized on-device models → fusion → report/trends → community loop (with a Mermaid flowchart + feedback loops). |
