@@ -21,6 +21,16 @@ python3 -m http.server 8000
 | `main.js` | Scroll-reveal (IntersectionObserver) + sticky-nav shadow. Progressive enhancement, so content still shows with JS off. |
 | `favicon.svg`, `og-image.svg` | Icon + social preview. |
 
+## Deploy (Vercel)
+
+The repo root includes `vercel.json` and `package.json` for Vercel. Import the repository in Vercel with the default root directory and deploy. Vercel runs:
+
+```bash
+npm run build
+```
+
+That copies this static site from `web/` into `dist/`, and Vercel serves `dist/`.
+
 ## Deploy (GitHub Pages)
 Point Pages at this folder:
 1. Repo **Settings → Pages → Build from a branch**.

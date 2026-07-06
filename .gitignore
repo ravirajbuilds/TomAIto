@@ -32,6 +32,8 @@ node_modules/
 npm-debug.log*
 yarn-error.log*
 .expo/
+dist/
+.vercel/
 
 # --- Xcode / Swift (OrchardEye iOS app) ---
 # Keep: *.xcodeproj/project.pbxproj and xcshareddata/ (shared schemes).

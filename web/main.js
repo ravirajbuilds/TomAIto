@@ -1,90 +1,113 @@
 // OrchardEye landing. Progressive enhancement only.
-// Scroll-reveal + sticky-nav shadow. No dependencies.
 
-// Reveal on scroll
-const els = document.querySelectorAll('.reveal');
-if ('IntersectionObserver' in window) {
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-in');
-        io.unobserve(e.target);
+const revealEls = document.querySelectorAll(".reveal");
+
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-in");
+          io.unobserve(entry.target);
+        }
       }
-    }
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+  );
 
-  // Stagger siblings inside a card grid for a nicer cascade.
-  els.forEach((el) => {
-    const i = [...(el.parentElement?.children || [])].indexOf(el);
-    el.style.transitionDelay = `${Math.min(i, 4) * 70}ms`;
+  revealEls.forEach((el) => {
+    const siblings = Array.from(el.parentElement?.children || []);
+    const index = siblings.indexOf(el);
+    el.style.transitionDelay = `${Math.min(Math.max(index, 0), 4) * 70}ms`;
     io.observe(el);
   });
 } else {
-  els.forEach((el) => el.classList.add('is-in'));
+  revealEls.forEach((el) => el.classList.add("is-in"));
 }
 
-// Sticky-nav border/shadow after scroll
-const nav = document.getElementById('nav');
-const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 8);
-onScroll();
-window.addEventListener('scroll', onScroll, { passive: true });
+const nav = document.getElementById("nav");
+const navToggle = document.getElementById("navToggle");
 
-// Mobile nav: hamburger toggles the dropdown; closes on link tap, Esc, or
-// an outside click.
-const navToggle = document.getElementById('navToggle');
-if (navToggle) {
-  const setOpen = (open) => {
-    nav.classList.toggle('is-open', open);
-    navToggle.setAttribute('aria-expanded', String(open));
-    navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+if (nav) {
+  const onScroll = () => {
+    nav.classList.toggle("is-stuck", window.scrollY > 8);
   };
-  navToggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
-  nav.querySelector('.nav__links').addEventListener('click', (e) => {
-    if (e.target.tagName === 'A') setOpen(false);
+
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+
+if (nav && navToggle) {
+  const menu = nav.querySelector(".nav__links");
+  const setOpen = (open) => {
+    nav.classList.toggle("is-open", open);
+    navToggle.setAttribute("aria-expanded", String(open));
+    navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  };
+
+  navToggle.addEventListener("click", () => setOpen(!nav.classList.contains("is-open")));
+  menu?.addEventListener("click", (event) => {
+    if (event.target instanceof HTMLAnchorElement) setOpen(false);
   });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
-  document.addEventListener('click', (e) => {
-    if (nav.classList.contains('is-open') && !nav.contains(e.target)) setOpen(false);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setOpen(false);
+  });
+  document.addEventListener("click", (event) => {
+    if (!nav.contains(event.target)) setOpen(false);
   });
 }
 
-// Pilot form: validate, then POST to data-endpoint if set, else compose a
-// mailto so it works on a static host with no backend.
-const form = document.getElementById('pilotForm');
-if (form) {
-  const status = form.querySelector('.pilot__status');
-  const say = (msg, ok) => { status.textContent = msg; status.dataset.state = ok ? 'ok' : 'err'; };
+const form = document.getElementById("pilotForm");
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+if (form instanceof HTMLFormElement) {
+  const status = form.querySelector(".pilot__status");
+  const setStatus = (message, ok) => {
+    if (!status) return;
+    status.textContent = message;
+    status.dataset.state = ok ? "ok" : "err";
+  };
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
-    if (!data.name?.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email || '')) {
-      say('Add your name and a valid email first.', false);
+    const name = String(data.name || "").trim();
+    const email = String(data.email || "").trim();
+
+    if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      setStatus("Add your name and a valid email first.", false);
       return;
     }
 
-    const endpoint = form.dataset.endpoint;
+    const endpoint = form.dataset.endpoint?.trim();
     if (endpoint) {
       try {
-        const res = await fetch(endpoint, {
-          method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form),
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
         });
-        say(res.ok ? "Thanks. We'll be in touch about the pilot." : 'Something went wrong. Try the email link.', res.ok);
-        if (res.ok) form.reset();
+        setStatus(
+          response.ok ? "Thanks. We'll be in touch about the pilot." : "Something went wrong. Try the email link.",
+          response.ok,
+        );
+        if (response.ok) form.reset();
       } catch {
-        say('Network error. Try again, or email us directly.', false);
+        setStatus("Network error. Try again, or email us directly.", false);
       }
       return;
     }
 
-    // No endpoint configured: open the user's mail client, pre-filled.
-    const body =
-      `Name: ${data.name}\nEmail: ${data.email}\n` +
-      `Orchard: ${data.orchard || '—'}\n\n${data.message || ''}`;
-    const to = form.dataset.mailto || 'hello@orchardeye.app';
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Orchard: ${String(data.orchard || "").trim() || "-"}`,
+      "",
+      String(data.message || "").trim(),
+    ].join("\n");
+    const to = form.dataset.mailto || "hello@orchardeye.app";
     window.location.href =
-      `mailto:${to}?subject=${encodeURIComponent('OrchardEye pilot application')}` +
+      `mailto:${to}?subject=${encodeURIComponent("OrchardEye pilot application")}` +
       `&body=${encodeURIComponent(body)}`;
-    say('Opening your email app to send the application…', true);
+    setStatus("Opening your email app to send the application.", true);
   });
 }
