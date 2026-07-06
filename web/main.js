@@ -29,6 +29,25 @@ const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 8);
 onScroll();
 window.addEventListener('scroll', onScroll, { passive: true });
 
+// Mobile nav: hamburger toggles the dropdown; closes on link tap, Esc, or
+// an outside click.
+const navToggle = document.getElementById('navToggle');
+if (navToggle) {
+  const setOpen = (open) => {
+    nav.classList.toggle('is-open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+    navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+  navToggle.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
+  nav.querySelector('.nav__links').addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('is-open') && !nav.contains(e.target)) setOpen(false);
+  });
+}
+
 // Pilot form: validate, then POST to data-endpoint if set, else compose a
 // mailto so it works on a static host with no backend.
 const form = document.getElementById('pilotForm');
