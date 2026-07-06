@@ -5,7 +5,7 @@
 :root {
   --ink:        #14231a;   /* near-black green text            */
   --ink-soft:   #43574c;   /* secondary text                  */
-  --ink-faint:  #7c8b82;   /* tertiary                        */
+  --ink-faint:  #667469;   /* tertiary (WCAG-AA on paper)     */
   --paper:      #fbfaf5;   /* warm off-white bg               */
   --paper-2:    #f2f0e6;   /* tint section                    */
   --card:       #ffffff;
@@ -77,6 +77,12 @@ em { font-style: normal; color: var(--leaf-600); font-weight: 600; }
   white-space: nowrap;
 }
 .btn:active { transform: translateY(1px); }
+/* Keyboard focus ring (WCAG 2.4.7) — visible only for keyboard users. */
+a:focus-visible, .btn:focus-visible, .nav__brand:focus-visible {
+  outline: 3px solid var(--leaf);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
 .btn--sm { --pad-y: .5rem; --pad-x: .95rem; font-size: .88rem; }
 .btn--lg { --pad-y: .85rem; --pad-x: 1.5rem; font-size: 1rem; }
 .btn--solid {
@@ -284,7 +290,7 @@ em { font-style: normal; color: var(--leaf-600); font-weight: 600; }
 .footer__links a:hover { color: var(--ripe); }
 .footer__fine {
   max-width: var(--maxw); margin: 0 auto; padding: 20px 24px 40px;
-  border-top: 1px solid var(--line-dark); font-size: .8rem; color: #6f8a7a;
+  border-top: 1px solid var(--line-dark); font-size: .8rem; color: #7c9585;
 }
 
 /* ───────────────── reveal animation ─────────────────
