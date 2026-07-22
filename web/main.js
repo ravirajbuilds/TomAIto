@@ -104,7 +104,7 @@ if (form instanceof HTMLFormElement) {
       "",
       String(data.message || "").trim(),
     ].join("\n");
-    const to = form.dataset.mailto || "hello@orchardeye.app";
+    const to = form.dataset.mailto || "ruchiagrawal9221@gmail.com";
     window.location.href =
       `mailto:${to}?subject=${encodeURIComponent("OrchardEye pilot application")}` +
       `&body=${encodeURIComponent(body)}`;
